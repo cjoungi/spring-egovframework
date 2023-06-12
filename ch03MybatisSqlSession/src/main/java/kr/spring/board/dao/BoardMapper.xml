@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.board.dao.BoardDAO">  
+  	<!-- 글쓰기 -->
+ 	<insert id="insertBoard" parameterType="boardVO"><!-- 알리아스 이용해서 짧게 명시 -->
+ 		INSERT INTO aboard(
+ 			num,
+ 			writer,
+ 			title,
+ 			passwd,
+ 			content,
+ 			reg_date)
+ 		VALUES (
+ 			aboard_seq.nextval,
+ 			#{writer},
+ 			#{title},
+ 			#{passwd},
+ 			#{content},
+ 			SYSDATE
+ 		)
+ 	</insert>
+ 	
+ 	<!-- 총 레코드 수 -->
+ 	<select id="getBoardCount" resultType="integer"><!-- integer 알리아스 사용 -->
+ 		SELECT COUNT(*) FROM aboard
+ 	</select>
+ 	
+ 	<!-- 목록 -->
+ 	<select id="getBoardList" parameterType="map" resultType="boardVO"><!-- 원래 풀네임은 java.util.Map -> 알리아스 map 사용-->
+ 		SELECT * FROM (SELECT a.*,rownum rnum FROM (SELECT * FROM aboard ORDER BY num DESC)a) 
+ 		<!-- [CDATA[ ]] 안에 있는 데이터는 문법체크를 하지 않음(< 오류 무시) -->
+ 		<![CDATA[
+ 		WHERE rnum >= #{start} AND rnum <= #{end}
+ 		]]>
+ 	</select>
+ 	
+ 	<!-- 글상세 -->
+ 	<select id="getBoard" parameterType="integer" resultType="boardVO">
+ 		SELECT * FROM aboard WHERE num=#{num}<!-- boardDAOImpl에 getBoard의 인자명 -->
+ 	</select>
+ 	
+ 	<!-- 글수정 -->
+ 	<update id="updateBoard" parameterType="BoardVO">
+ 		UPDATE aboard SET writer=#{writer},title=#{title},content=#{content} WHERE num=#{num}
+ 	</update>
+ 	
+ 	<!-- 글삭제 -->
+ 	<delete id="deleteBoard" parameterType="integer">
+ 		DELETE FROM aboard WHERE num=#{num}
+ 	</delete>
+</mapper>
+
+
+
+
+
+
+
