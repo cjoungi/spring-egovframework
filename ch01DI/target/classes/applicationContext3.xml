@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 프로퍼티 이름을 이용한 의존 관계 자동 설정 -->
+	<!-- 프로퍼티명과 빈 객체의 이름이 일치하면 의존 관계 자동 설정 -->
+	<bean id="writeArticleService" class="kr.spring.ch13.WriteArticleService" autowire="byName"/>
+	<bean id="writeArticleDAO" class="kr.spring.ch13.WriteArticleDAO"/>
+	
+	
+	<!-- 프로퍼티 타입을 이용한 의존 관계 자동 설정 -->
+	<!-- 프로퍼티의 타입과 빈 객체의 타입이 일치하면 의존 관계 자동 설정 -->
+	<bean id="systemMonitor"  class="kr.spring.ch14.SystemMonitor" autowire="byType"/>
+	<bean id="phoneCall" class="kr.spring.ch14.PhoneCall"/>
+	<!-- 동일한 타입의 객체가 존재할 경우 오류 발생 -->
+	<!-- <bean id="phoneCall2" class="kr.spring.ch14.PhoneCall"/> -->
+	
+	
+	<!-- @Autowired, @Resource 어노테이션 사용시 아래 설정 추가-->
+	<context:annotation-config/>
+	
+	<!-- @Autowired 어노테이션을 이용한 의존 관계 자동 설정 -->
+	<bean id="monitor" class="kr.spring.ch15.SystemMonitor">
+		<property name="periodTime">
+			<value>10</value>
+		</property>
+	</bean>
+	<bean id="sender" class="kr.spring.ch15.SmsSender"/>
+	
+	
+	<!-- @Resource 어노테이션을 이용하여 빈 객체의 이름과 프로퍼티명이 일치하면 의존 관계 주입 -->
+	<bean id="homeController" class="kr.spring.ch16.HomeController"/>
+	<bean id="camera1" class="kr.spring.ch16.Camera" p:number="10"/>
+	<bean id="camera2" class="kr.spring.ch16.Camera" p:number="20"/>
+</beans>
